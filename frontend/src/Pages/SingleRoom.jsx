@@ -81,10 +81,12 @@ const SingleRoom = () => {
               <img src="/images/win.png" alt="win-icon" />
               <span className="font-bold ml-[12px]">Leave Quietly</span>
             </button>
-            <button className="actionBtn" onClick={handleShare}>
-              <ShareIcon className="w-[18px] font-bold" />
-              <span className="font-bold ml-[10px]">Share</span>
-            </button>
+            {room?.roomType === "private" && (
+              <button className="actionBtn" onClick={handleShare}>
+                <ShareIcon className="w-[18px] font-bold" />
+                <span className="font-bold ml-[10px]">Share</span>
+              </button>
+            )}
           </div>
         </div>
         {room?.roomType === "open" && (

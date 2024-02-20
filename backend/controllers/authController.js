@@ -20,18 +20,19 @@ const sendOtp = async (req, res) => {
   if (!phone) {
     res.status(400).json({ message: "Phone filled is Required" });
   }
-
+  const newPhone = '+91' + phone;
+  // console.log(newPhone)
   const otp = await generateOtp();
   const ttl = 1000 * 60 * 2; //2 Minutes
   const expires = Date.now() + ttl;
   const data = `${phone}.${otp}.${expires}`;
   const hash = hashOtp(data);
-
+ 
   try {
-    // await sendBySms(phone, otp);
+    // await sendBySms(newPhone, otp);
     return res.json({
       hash: `${hash}.${expires}`,
-      phone,
+      phone: newPhone,
       otp,
     });
   } catch (error) {
@@ -156,7 +157,7 @@ const logout = async (req, res) => {
 
 
 const sendOtpByEmail = async (req, res) => {
-  const { email } = req.body; // Change 'phone' to 'email'
+  const { email } = req.body; 
 
   if (!email) {
     res.status(400).json({ message: "Email is required" });
@@ -164,13 +165,12 @@ const sendOtpByEmail = async (req, res) => {
   }
 
   const otp = await generateOtp();
-  const ttl = 1000 * 60 * 2; // 2 Minutes
+  const ttl = 1000 * 60 * 2; 
   const expires = Date.now() + ttl;
   const data = `${email}.${otp}.${expires}`;
   const hash = hashOtp(data);
 
   try {
-    // Send OTP to user's email using nodemailer
     // const transporter = nodemailer.createTransport({
     //   service: "YourEmailService", // e.g., "Gmail" or "SMTP"
     //   auth: {
@@ -224,7 +224,7 @@ const verifyOtpOfEmail = async (req, res) => {
     return;
   }
 
-  const data = `${email}.${otp}.${expires}`; // Change 'phone' to 'email'
+  const data = `${email}.${otp}.${expires}`;
 
   const isValid = verifyOtpService(hashedOtp, data);
 
